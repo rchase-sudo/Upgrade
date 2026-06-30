@@ -318,7 +318,11 @@ const SUPABASE_URL = "https://mmaqwemqbxwngqxtnsug.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tYXF3ZW1xYnh3bmdxeHRuc3VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3NDY1MjgsImV4cCI6MjA5ODMyMjUyOH0.UrC1-5gGNODzu1PHU1QEqZAfzYhDbpQDlK3ruaIUDj0";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const PAID_REDIRECT_URL = "/index.html"; // adjust to your real paid page path
+// ✅ FIX: was "/index.html" — a leading slash resolves from the domain root
+// (rchase-sudo.github.io/index.html), which doesn't exist. The real login
+// page lives at /Concept/, so point there explicitly with the full URL.
+const CONCEPT_URL = "https://rchase-sudo.github.io/Concept/";
+const PAID_REDIRECT_URL = CONCEPT_URL; // adjust if the paid page is a different path under /Concept/
 
 async function init() {
   const { data } = await sb.auth.getSession();
@@ -326,7 +330,7 @@ async function init() {
 
   if (!session) {
     // Not signed in at all — send them to the main page to sign in first
-    window.location.href = "/index.html";
+    window.location.href = CONCEPT_URL;
     return;
   }
 
@@ -337,7 +341,7 @@ async function init() {
   `;
   document.getElementById("signout-btn").addEventListener("click", async () => {
     await sb.auth.signOut();
-    window.location.href = "/index.html";
+    window.location.href = CONCEPT_URL;
   });
 
   await checkStatus(session);
@@ -365,7 +369,7 @@ document.getElementById("recheck-link")?.addEventListener("click", async (e) => 
 document.getElementById("signout-link")?.addEventListener("click", async (e) => {
   e.preventDefault();
   await sb.auth.signOut();
-  window.location.href = "/index.html";
+  window.location.href = CONCEPT_URL;
 });
 
 init();
