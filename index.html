@@ -319,8 +319,9 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ✅ FIX: was "/index.html" — a leading slash resolves from the domain root
-// (rchase-sudo.github.io/index.html), which doesn't exist. The real login
-// page lives at /Concept/, so point there explicitly with the full URL.
+// (rchase-sudo.github.io/index.html), which doesn't exist since this site
+// is hosted under /Concept/ and /Upgrade/ subpaths, not at the bare root.
+// Point at the real login page with the full absolute URL instead.
 const CONCEPT_URL = "https://rchase-sudo.github.io/Concept/";
 const PAID_REDIRECT_URL = CONCEPT_URL; // adjust if the paid page is a different path under /Concept/
 
